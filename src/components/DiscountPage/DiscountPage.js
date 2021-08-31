@@ -16,8 +16,8 @@ const DiscountPage = () => {
   return (
     <div>
       <DiscountModal modal={modal} setModal={setModal} />
-      {!isDiscount
-        ? <div className={css.activeDiscount} onClick={()=>setModal(true )}>
+      { !isDiscount
+        ? <div className={css.discount} onClick={()=>setModal(true )}>
           <FormattedMessage
             id={'BookingDatesForm.enterDiscountCoupon'}
           />

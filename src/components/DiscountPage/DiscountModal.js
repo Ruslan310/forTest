@@ -5,16 +5,10 @@ import { checkedDiscount } from '../../util/api';
 import { connect } from 'react-redux';
 import { setDiscount, setDiscountError } from './Discount.duck';
 
-const DiscountModalComponent = ({
-                                  discountType,
-                                  modal,
-                                  setModal,
-                                  discountValue,
-                                  isDiscount,
-                                  discountError,
-                                  setDiscount,
-                                  setDiscountError,
-                                }) => {
+const DiscountModalComponent = props => {
+
+  const {discountType, modal, setModal, discountValue,
+    isDiscount, discountError, setDiscount, setDiscountError} = props
 
   const [voucher, setVoucher] = useState('');
 

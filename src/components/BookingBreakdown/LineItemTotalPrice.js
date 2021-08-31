@@ -6,6 +6,7 @@ import { txIsCanceled, txIsDelivered, txIsDeclined } from '../../util/transactio
 import { propTypes } from '../../util/types';
 
 import css from './BookingBreakdown.module.css';
+import { useSelector } from 'react-redux';
 
 const LineItemUnitPrice = props => {
   const { transaction, isProvider, intl } = props;
@@ -24,18 +25,27 @@ const LineItemUnitPrice = props => {
   ) : (
     <FormattedMessage id="BookingBreakdown.total" />
   );
+  const Discount = useSelector(state => state.Discount);
 
   const totalPrice = isProvider
     ? transaction.attributes.payoutTotal
-    : transaction.attributes.payinTotal;
+    : transaction.attributes.payinTotal
   const formattedTotalPrice = formatMoney(intl, totalPrice);
 
+  const totalPriceWithDiscount = () => {
+    let discountTotalPrice = formattedTotalPrice.substr(1)
+    if(Discount.discountType === '%')  return (discountTotalPrice - (discountTotalPrice * Discount.discountValue / 100))
+    if(Discount.discountType === '$')  return (discountTotalPrice - Discount.discountValue).toFixed(2)
+    return discountTotalPrice
+  }
+  console.log(formattedTotalPrice);
+  console.log(totalPriceWithDiscount());
   return (
     <>
       <hr className={css.totalDivider} />
       <div className={css.lineItemTotal}>
         <div className={css.totalLabel}>{totalLabel}</div>
-        <div className={css.totalPrice}>{formattedTotalPrice}</div>
+        <div className={css.totalPrice}>${totalPriceWithDiscount()}</div>
       </div>
     </>
   );

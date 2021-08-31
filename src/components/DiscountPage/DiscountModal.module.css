@@ -39,7 +39,7 @@
   background-color: white;
   transform: scale(0.5);
   transition: 0.4s all;
-  width: 20vw;
+  width: 30vw;
   cursor:pointer;
   text-align: center;
   border: 2px solid white;
@@ -106,13 +106,6 @@
 }
 
 .discount {
-  margin-top: 10px;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-}
-.activeDiscount {
-  border: 3px solid #2ecc71;
   margin-top: 10px;
   text-align: center;
   cursor: pointer;

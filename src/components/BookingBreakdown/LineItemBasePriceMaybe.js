@@ -4,11 +4,14 @@ import { formatMoney } from '../../util/currency';
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
 
 import css from './BookingBreakdown.module.css';
+import { useSelector } from 'react-redux';
 
 const LineItemBasePriceMaybe = props => {
   const { transaction, unitType, intl } = props;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
+  const Discount = useSelector(state => state.Discount);
+
   const translationKey = isNightly
     ? 'BookingBreakdown.baseUnitNight'
     : isDaily
@@ -26,12 +29,27 @@ const LineItemBasePriceMaybe = props => {
   const unitPrice = unitPurchase ? formatMoney(intl, unitPurchase.unitPrice) : null;
   const total = unitPurchase ? formatMoney(intl, unitPurchase.lineTotal) : null;
 
+  const sumDiscount = () => {
+    if(Discount.discountType === '%') return `- ${Discount.discountValue} ${Discount.discountType}`
+    if(Discount.discountType === '$') return `- ${Discount.discountType}${Discount.discountValue}`
+  }
+
   return quantity && total ? (
-    <div className={css.lineItem}>
+    <div>
+      <div className={css.lineItem}>
       <span className={css.itemLabel}>
         <FormattedMessage id={translationKey} values={{ unitPrice, quantity }} />
       </span>
-      <span className={css.itemValue}>{total}</span>
+        <span className={css.itemValue}>{total}</span>
+      </div>
+      { Discount.isDiscount
+        ? <div className={css.lineItem}>
+            <span className={css.itemLabel}>
+              <FormattedMessage id="BookingBreakdown.discount"/>
+            </span>
+            <span className={css.itemValue}>{sumDiscount()}</span>
+            </div>
+        : null }
     </div>
   ) : null;
 };
